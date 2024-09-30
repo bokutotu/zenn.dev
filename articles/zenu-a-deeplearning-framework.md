@@ -6,24 +6,22 @@ topics: ["Rust", "DeepLearning"]
 published: false
 ---
 
-# zenu（ぜんう）：Rust製深層学習フレームワーク
-
 https://github.com/bokutotu/zenu
 
-## TL;DR
+# TL;DR
 - zenuは高速で使いやすい新しい深層学習フレームワークを開発しています。
 - Rust言語で開発され、安全性が高い
 - PyTorchと同等の速度で動作(nvidia gpuの場合のみ)し、使い方も似ている
 - 今後、より多くのモデルや分散学習のサポートなどの機能拡張を予定
 - フルスクラッチで書かれている(rust-ndarray非依存)
 
-## 名前の由来
+# 名前の由来
 
 名前の由来は、冒頓単于です。
 GitHubのユーザー名が [bokutotu](github.com/bokutotu) で、クレート名が[zenu](github.com/bokutotu/zenu)だと、合わせてbokutotuzenu(ぼくとつぜんう)となります。
 
 
-## zenuの特徴
+# zenuの特徴
 
 * GPU(Nvidia)対応 : NvidiaのGPUを使って、高速に学習や予測ができます。PyTorchと同等の速度を実現しています。(cudnnを使用)
 
@@ -33,7 +31,7 @@ GitHubのユーザー名が [bokutotu](github.com/bokutotu) で、クレート�
 
 * フルスクラッチ : Rustのndarrayライブラリを使用せず、フルスクラッチで書かれています。これにより、cudnnを直接使用できます。
 
-## zenuのアーキテクチャ
+# zenuのアーキテクチャ
 
 zenuは複数のクレートから構成されています。
 
@@ -43,13 +41,26 @@ zenuは複数のクレートから構成されています。
 * `zenu-layer`: ニューラルネットワークの層を提供するクレート
 * `zenu` : 上記のクレートを統合したメインクレート
 
-## zenuを使ってみよう：手書き数字の認識
+# zenuの使い方
 
-zenuがどんなものか、実際に見てみましょう。ここでは、手書きの数字を認識する簡単なプログラムを作ってみます。
+zenuがどんなものか、実際に見てみましょう。ここでは、mnistデータセットを使って、手書き数字の分類を行います。
+
+## モデルの定義
 
 ```rust
-// zenuを使用した手書き数字認識のサンプルコード
-// （詳細は省略）
+pub struct SimpleModel<D: Device> {
+    pub linear_1: Linear<f32, D>,
+    pub linear_2: Linear<f32, D>,
+}
+
+impl<D: Device> SimpleModel<D> {
+    pub fn new() -> Self {
+        let linear_1 = Linear::new(784, 128);
+        let linear_2 = Linear::new(128, 10);
+
+        SimpleModel { linear_1, linear_2 }
+    }
+}
 ```
 
 ## 他のフレームワークとの比較
@@ -63,7 +74,7 @@ zenuがどれくらい速いのか、具体的に見てみましょう。有名�
 
 ※ 具体的な数字は、実際の測定結果を入れてください。
 
-## これからのzenu
+# これからのzenu
 
 zenuの開発チームは、まだまだ新しい機能を追加する予定です。近い将来、以下のような機能が加わる予定です：
 
@@ -74,15 +85,7 @@ zenuの開発チームは、まだまだ新しい機能を追加する予定で�
 * ドキュメントの充実 : ドキュメントを充実させ、使いやすさを向上させます。
 * Cpu実装の高速化 : Cpu実装の高速化を行い、より多くの環境で高速に動作するようにします。
 
-## つかってください🙇
+# つかってください🙇
 
 zenuは、まだまだ開発途中ですが、使っていただきたいです。バグや要望など、フィードバックをお待ちしています。ぜひ、GitHubの[Issue](github.com/bokutotu/zenu/issues)や[Pull Request](github.com/bokutotu/zenu/pulls)を送ってください。
 あと、Starくれると、非常にやる気が出ます🌟
-
-## まとめ
-
-* zenu(ぜんう)という深層学習フレームワークを開発しています。
-* Rust言語で開発され、高速で使いやすい特徴があります。
-* GPU(Nvidia)対応です。
-* PyTorchライクな使い方を採用しています。
-* zenuを一緒に良くしていきませんか？皆さんの意見や協力をお待ちしています。一緒にzenuを育てて、機械学習の未来を
